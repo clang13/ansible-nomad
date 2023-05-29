@@ -68,16 +68,16 @@
   ansible.builtin.file:
     dest: "{{ nomad_config_dir }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
     mode: "0700"
 
 - name: Base configuration
   ansible.builtin.template:
     src: base.hcl.j2
     dest: "{{ nomad_config_dir }}/base.hcl"
-    owner: root
-    group: root
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
     mode: "0600"
   notify:
     - Restart nomad
@@ -99,8 +99,8 @@
   ansible.builtin.template:
     src: server.hcl.j2
     dest: "{{ nomad_config_dir }}/server.hcl"
-    owner: root
-    group: root
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
     mode: "0600"
   when:
     - _nomad_node_server | bool
@@ -121,8 +121,8 @@
   ansible.builtin.template:
     src: client.hcl.j2
     dest: "{{ nomad_config_dir }}/client.hcl"
-    owner: root
-    group: root
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
     mode: "0600"
   when:
     - _nomad_node_client | bool
@@ -143,8 +143,8 @@
   ansible.builtin.template:
     src: custom.json.j2
     dest: "{{ nomad_config_dir }}/custom.json"
-    owner: root
-    group: root
+    owner: "{{ nomad_user }}"
+    group: "{{ nomad_group }}"
     mode: "0600"
   when:
     - nomad_config_custom is defined
